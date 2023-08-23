@@ -2,14 +2,20 @@ package com.safespend.cashsentry.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.navigation.fragment.NavHostFragment
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation
 import com.safespend.cashsentry.R
+import com.safespend.cashsentry.data.local_data_source.database.CashSentryDB
+import com.safespend.cashsentry.data.local_data_source.model.UserProfile
 import com.safespend.cashsentry.databinding.ActivityMainBinding
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    lateinit var database: CashSentryDB
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_CashSentry)
@@ -25,6 +31,13 @@ class MainActivity : AppCompatActivity() {
         binding.meowBottonNavigation.setCount(2, "22")
         binding.meowBottonNavigation.setCount(1, "$$")
         binding.meowBottonNavigation.show(1)
+
+        database = CashSentryDB.getDB(this)
+
+        GlobalScope.launch {
+            database.userRepository().upsertUser(UserProfile("kalu@gmail.com", "admin"))
+            Log.i("db","running")
+        }
 
         binding.meowBottonNavigation.setOnClickMenuListener {
             when(it.id){
