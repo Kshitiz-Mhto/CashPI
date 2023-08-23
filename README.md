@@ -1,9 +1,14 @@
 # CashPI
 
+
 > [!NOTE]
 > Still on Work.
 
-Take control with CashPI!🚀 A simple cash caretaker app, built on MVVM architecture employs CURD for easy expense and deposit tracking.
+<br>
+
+CashPI🚀: Empower your financial journey with seamless expense tracking and deposit management. Built on MVVM architecture and CURD operations, it's your smart cash caretaker for effective money control.
+
+<br>
 
 ### Screenshots 
 
