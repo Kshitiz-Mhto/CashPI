@@ -12,20 +12,22 @@ abstract class CashSentryDB: RoomDatabase() {
 
     abstract fun userRepository(): UserRepository
 
-    @Volatile
-    private var INSTANCE: CashSentryDB? = null
+    companion object {
+        @Volatile
+        private var INSTANCE: CashSentryDB? = null
 
-    fun getDB(context: Context): CashSentryDB{
-        if(INSTANCE == null){
-            synchronized(this){
-                INSTANCE = Room.databaseBuilder(
-                    context.applicationContext,
-                    CashSentryDB::class.java,
-                    "cashsentryDB"
-                ).build()
+        fun getDB(context: Context): CashSentryDB {
+            if (INSTANCE == null) {
+                synchronized(this) {
+                    INSTANCE = Room.databaseBuilder(
+                        context.applicationContext,
+                        CashSentryDB::class.java,
+                        "cashsentryDB"
+                    ).build()
+                }
             }
+            return INSTANCE!!
         }
-        return INSTANCE!!
     }
 
 }
