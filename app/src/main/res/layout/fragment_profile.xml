@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/perfectbg"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".ui.ProfileFragment">
+    <TextView
+        android:id="@+id/etUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hari Lal Singh"
+        android:textSize="25sp"
+        android:textColor="@color/white"
+        android:layout_marginBottom="30dp"
+        />
+
+    <TextView
+        android:id="@+id/etUserEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="hariLalSingh90@gmail.com"
+        android:textSize="25sp"
+        android:textColor="@color/white"
+        />
+
+</androidx.appcompat.widget.LinearLayoutCompat>
