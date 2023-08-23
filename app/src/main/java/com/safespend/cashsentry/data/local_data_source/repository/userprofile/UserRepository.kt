@@ -9,9 +9,9 @@ import com.safespend.cashsentry.data.local_data_source.model.UserProfile
 interface UserRepository {
 
     @Upsert
-    suspend fun insertContact(userProfile: UserProfile)
+    suspend fun upsertUser(userProfile: UserProfile)
 
     @Delete
-    suspend fun deleteContact(userProfile: UserProfile)
+    suspend fun deleteUser(userProfile: UserProfile)
 
 }
