@@ -3,7 +3,7 @@
     android:opacity="opaque">
 
     <!--Background color of your Splash Screen-->
-    <item android:drawable="@color/blur" />
+    <item android:drawable="@color/perfectbg" />
 
     <item>
         <!--This logo is 144x144 px. If your image is larger, you should scale it to fit nicely-->
