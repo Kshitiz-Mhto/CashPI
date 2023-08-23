@@ -2,6 +2,7 @@ package com.safespend.cashsentry.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.navigation.fragment.NavHostFragment
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation
 import com.safespend.cashsentry.R
 import com.safespend.cashsentry.databinding.ActivityMainBinding
@@ -25,5 +26,32 @@ class MainActivity : AppCompatActivity() {
         binding.meowBottonNavigation.setCount(1, "$$")
         binding.meowBottonNavigation.show(1)
 
+        binding.meowBottonNavigation.setOnClickMenuListener {
+            when(it.id){
+                1 -> navigateToHomeFragment()
+                2 -> navigateToNotificationFragment()
+                3 -> navigateToProfileFragment()
+            }
+        }
+
     }
+
+    private fun navigateToProfileFragment() {
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        val navController = navHostFragment.navController
+        navController.navigate(R.id.profileFragment)
+    }
+
+    private fun navigateToHomeFragment() {
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        val navController = navHostFragment.navController
+        navController.navigate(R.id.homeFragment)
+    }
+
+    private fun navigateToNotificationFragment() {
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        val navController = navHostFragment.navController
+        navController.navigate(R.id.notificationFragment)
+    }
+
 }
