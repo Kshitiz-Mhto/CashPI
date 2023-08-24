@@ -39,19 +39,7 @@ class ProfileFragment : Fragment() {
             ProfileViewModel::class.java)
         pieChart = binding.pieChart
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            profileViewModel.adminProfile.collect{state ->
-                if (state.isLoading) {
-                    Log.i("UI load", "lol")
-                }else if(state.error.isNotEmpty()){
-                    Log.i("UI error", "lol")
-                }else if(state.userProfile != null){
-                    binding.
-                    etUserEmail.text = state.userProfile.email
-                    binding.etUserName.text = state.userProfile.name
-                }
-            }
-        }
+        showProfileDetails()
         showPieChartResult()
         return binding.root
     }
@@ -78,6 +66,22 @@ class ProfileFragment : Fragment() {
         pieChart.setEntryLabelColor(Color.WHITE)
         pieChart.animateY(2000)
 
+    }
+
+    private fun showProfileDetails(){
+        viewLifecycleOwner.lifecycleScope.launch {
+            profileViewModel.adminProfile.collect{state ->
+                if (state.isLoading) {
+                    Log.i("UI load", "lol")
+                }else if(state.error.isNotEmpty()){
+                    Log.i("UI error", "lol")
+                }else if(state.userProfile != null){
+                    binding.
+                    etUserEmail.text = state.userProfile.email
+                    binding.etUserName.text = state.userProfile.name
+                }
+            }
+        }
     }
 
 }

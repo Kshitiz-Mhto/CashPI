@@ -22,6 +22,11 @@ CashPI🚀: Empower your financial journey with seamless expense tracking and de
 </td>
 <td>
 <p align="center">
+	<img src="./assets/history_screenshot.png" alt="homescreen" height="auto">
+</p>
+</td>
+<td>
+<p align="center">
 	<img src="./assets/profile_screenshot.png" alt="homescreen" height="auto">
 </p>
 </td>
