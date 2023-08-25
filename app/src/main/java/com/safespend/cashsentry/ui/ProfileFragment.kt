@@ -18,6 +18,7 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.safespend.cashsentry.databinding.FragmentProfileBinding
 import com.safespend.cashsentry.viewmodel.profile.ProfileViewModel
+import com.safespend.cashsentry.viewmodel.profile.ProfileViewModelFactory
 import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment() {
@@ -35,7 +36,7 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
-        profileViewModel = ViewModelProvider.AndroidViewModelFactory(application = Application()).create(
+        profileViewModel = ViewModelProvider(requireActivity(),ProfileViewModelFactory(application = requireContext())).get(
             ProfileViewModel::class.java)
         pieChart = binding.pieChart
 
