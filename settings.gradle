@@ -15,5 +15,5 @@ dependencyResolutionManagement {
         maven {url "https://jitpack.io"}
     }
 }
-rootProject.name = "CashSentry"
+rootProject.name = "CashPI"
 include ':app'
