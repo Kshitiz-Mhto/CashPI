@@ -1,17 +1,18 @@
 package com.safespend.cashsentry.viewmodel.profile
 
-import android.app.Application
+import android.content.Context
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.safespend.cashsentry.data.local_data_source.database.CashSentryDB
 import com.safespend.cashsentry.data.local_data_source.model.UserProfile
+import com.safespend.cashsentry.util.Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class ProfileViewModel(application: Application): AndroidViewModel(application) {
+class ProfileViewModel(application: Context): ViewModel() {
 
     var database: CashSentryDB = CashSentryDB.getDB(application)
     private lateinit var admin: UserProfile
@@ -25,7 +26,7 @@ class ProfileViewModel(application: Application): AndroidViewModel(application) 
 
     fun getAdmin(){
         viewModelScope.launch (Dispatchers.IO){
-            admin = database.userRepository().getAdmin("kalu@gmail.com")
+            admin = database.userRepository().getAdmin(Constants.ADMIN_EMAIL)
             Log.i("data1", admin.email)
             _userProfile.value= UserProfileState(userProfile = admin)
             Log.i("data", _userProfile.value.userProfile!!.email)
