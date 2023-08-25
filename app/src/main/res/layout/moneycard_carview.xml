@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="20dp"
+    android:layout_marginEnd="20dp"
+    android:layout_marginTop="20dp"
+    android:background="@color/perfectbg">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/statsLayoutCardview"
+        android:layout_width="match_parent"
+        android:layout_height="215dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardCornerRadius="15dp">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@drawable/card_gradient">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="18dp"
+                android:paddingBottom="15dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_card"
+                    app:tint="#C3D5D7DF"
+                    android:layout_weight="1"
+                    />
+                <TextView
+                    android:id="@+id/etCardName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="30sp"
+                    android:text="Master Card"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textColor="#D7D5D7DF"
+                    android:layout_weight="1"
+                    android:layout_marginStart="10dp"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:id="@+id/etCardAmount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="30sp"
+                    android:text="$ 400"
+                    android:paddingStart="25dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textColor="@color/white"
+                    />
+
+                <TextView
+                    android:id="@+id/etCardSerialNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="25sp"
+                    android:layout_marginTop="10dp"
+                    android:text="****    ****     ****     4328"
+                    android:paddingStart="25dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textColor="#D7D5D7DF"
+                    />
+
+            </LinearLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.cardview.widget.CardView>
+
+</FrameLayout>
