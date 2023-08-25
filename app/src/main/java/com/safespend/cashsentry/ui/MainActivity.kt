@@ -11,6 +11,7 @@ import com.safespend.cashsentry.data.local_data_source.model.UserProfile
 import com.safespend.cashsentry.databinding.ActivityMainBinding
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import com.safespend.cashsentry.util.Constants
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,7 +26,7 @@ class MainActivity : AppCompatActivity() {
 
         // --------------------> Botton Navigation <------------------------
         binding.meowBottonNavigation.add(MeowBottomNavigation.Model(1, R.drawable.ic_wallet))
-        binding.meowBottonNavigation.add(MeowBottomNavigation.Model(2, R.drawable.ic_notification))
+        binding.meowBottonNavigation.add(MeowBottomNavigation.Model(2, R.drawable.ic_history))
         binding.meowBottonNavigation.add(MeowBottomNavigation.Model(3, R.drawable.ic_profile))
 
         binding.meowBottonNavigation.setCount(2, "22")
@@ -35,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         database = CashSentryDB.getDB(this)
 
         GlobalScope.launch {
-            database.userRepository().upsertUser(UserProfile("kalu@gmail.com", "admin"))
+            database.userRepository().upsertUser(UserProfile(Constants.ADMIN_EMAIL, "Admin"))
             Log.i("db","running")
         }
 

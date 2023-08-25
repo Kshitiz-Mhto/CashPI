@@ -23,6 +23,7 @@
         android:id="@+id/meowBottonNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:mbn_backgroundBottomColor="@color/white"
         app:mbn_circleColor="@color/white"
