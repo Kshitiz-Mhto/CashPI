@@ -1,5 +1,10 @@
 <resources>
-    <string name="app_name">CashSentry</string>
+    <string name="app_name">CashPI</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="moneycards">
+        <item>Master Card</item>
+        <item>Visa</item>
+        <item>Amex</item>
+    </string-array>
 </resources>

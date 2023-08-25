@@ -3,5 +3,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="blur">#FF14182B</color>
+    <color name="transy">#39FFFFFF</color>
     <color name="perfectbg">#0D1117</color>
 </resources>
