@@ -1,7 +1,6 @@
 package com.safespend.cashsentry.viewmodel.profile
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,7 +9,6 @@ import com.safespend.cashsentry.data.local_data_source.database.CashSentryDB
 import com.safespend.cashsentry.data.local_data_source.model.UserProfile
 import com.safespend.cashsentry.util.Constants
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -31,8 +29,10 @@ class ProfileViewModel(application: Context): ViewModel() {
 
     fun getAdmin(){
         viewModelScope.launch (Dispatchers.IO){
-            val admin: UserProfile = database.userRepository().getAdmin(Constants.ADMIN_EMAIL)
-            _userProfile.value= UserProfileState(userProfile = admin)
+            val admin: Flow<UserProfile> = database.userRepository().getAdmin()
+            admin.collect{
+                _userProfile.value= UserProfileState(userProfile = it)
+            }
         }
     }
 

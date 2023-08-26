@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -51,6 +50,8 @@ class ProfileFragment : Fragment() {
         binding.btnEditProfile.setOnClickListener{
             showProfileEditDialog()
         }
+
+        showProfileDetails()
 
         return binding.root
     }
@@ -116,8 +117,9 @@ class ProfileFragment : Fragment() {
                 }
                 profileViewModel.upsertAdmin(
                     UserProfile(
-                        enteredProfileEmail.text.toString(),
-                        enteredProfileName.text.toString()
+                        id = 1,
+                        email = enteredProfileEmail.text.toString(),
+                        name = enteredProfileName.text.toString()
                     )
                 )
                 profileViewModel.upsertSuccessEvent.observe(viewLifecycleOwner) {
@@ -127,6 +129,13 @@ class ProfileFragment : Fragment() {
                     }
                 }
             }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewLifecycleOwner.lifecycleScope.launch {
+            showProfileDetails()
         }
     }
 
