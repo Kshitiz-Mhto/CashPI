@@ -15,8 +15,8 @@ interface UserRepository {
 
 
     @Transaction
-    @Query("SELECT * FROM user_profile WHERE email = :adminEmail")
-    suspend fun getAdmin(adminEmail: String): UserProfile
+    @Query("SELECT * FROM user_profile ORDER BY id DESC LIMIT 1")
+    fun getAdmin(): Flow<UserProfile>
 
 
     @Transaction
