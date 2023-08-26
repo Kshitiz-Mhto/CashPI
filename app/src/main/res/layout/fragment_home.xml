@@ -21,10 +21,11 @@
         android:id="@+id/btnAddCard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="33dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginBottom="18dp"
         android:clickable="true"
         android:src="@drawable/stripe_ic_paymentsheet_add_dark"
+        android:contentDescription="Click to add your card"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
