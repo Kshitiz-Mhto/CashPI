@@ -2,16 +2,10 @@ package com.safespend.cashsentry.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.navigation.fragment.NavHostFragment
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation
 import com.safespend.cashsentry.R
-import com.safespend.cashsentry.data.local_data_source.database.CashSentryDB
-import com.safespend.cashsentry.data.local_data_source.model.UserProfile
 import com.safespend.cashsentry.databinding.ActivityMainBinding
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import com.safespend.cashsentry.util.Constants
 
 class MainActivity : AppCompatActivity() {
 
