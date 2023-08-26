@@ -24,7 +24,7 @@
         android:layout_marginStart="35dp"
         android:layout_marginBottom="18dp"
         android:clickable="true"
-        android:src="@drawable/stripe_ic_paymentsheet_add_dark"
+        android:src="@drawable/ic_add_24"
         android:contentDescription="Click to add your card"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
