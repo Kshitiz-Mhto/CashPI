@@ -1,13 +1,16 @@
 package com.safespend.cashsentry.ui
 
-import android.app.Application
+import android.app.Dialog
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -16,7 +19,11 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.ColorTemplate
+import com.google.android.material.textfield.TextInputEditText
+import com.safespend.cashsentry.R
+import com.safespend.cashsentry.data.local_data_source.model.UserProfile
 import com.safespend.cashsentry.databinding.FragmentProfileBinding
+import com.safespend.cashsentry.util.Constants
 import com.safespend.cashsentry.viewmodel.profile.ProfileViewModel
 import com.safespend.cashsentry.viewmodel.profile.ProfileViewModelFactory
 import kotlinx.coroutines.launch
@@ -39,9 +46,12 @@ class ProfileFragment : Fragment() {
         profileViewModel = ViewModelProvider(requireActivity(),ProfileViewModelFactory(application = requireContext())).get(
             ProfileViewModel::class.java)
         pieChart = binding.pieChart
-
-        showProfileDetails()
         showPieChartResult()
+
+        binding.btnEditProfile.setOnClickListener{
+            showProfileEditDialog()
+        }
+
         return binding.root
     }
 
@@ -70,6 +80,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun showProfileDetails(){
+        profileViewModel.getAdmin()
         viewLifecycleOwner.lifecycleScope.launch {
             profileViewModel.adminProfile.collect{state ->
                 if (state.isLoading) {
@@ -77,9 +88,43 @@ class ProfileFragment : Fragment() {
                 }else if(state.error.isNotEmpty()){
                     Log.i("UI error", "lol")
                 }else if(state.userProfile != null){
-                    binding.
-                    etUserEmail.text = state.userProfile.email
+                    binding.etUserEmail.text = state.userProfile.email
                     binding.etUserName.text = state.userProfile.name
+                }
+            }
+        }
+    }
+
+    private fun showProfileEditDialog() {
+
+        val dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.custom_dialog_box_editprofile)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val enteredProfileName = dialog.findViewById<TextInputEditText>(R.id.enteredProfileName)
+        val enteredProfileEmail = dialog.findViewById<TextInputEditText>(R.id.enteredProfileEmail)
+        val btnEditProfile = dialog.findViewById<Button>(R.id.btnProfileUpdate)
+
+        dialog.getWindow()!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.show()
+
+        btnEditProfile?.let{
+            it.setOnClickListener {
+                if(Constants.ADMIN_EMAIL.isNotEmpty() or Constants.ADMIN_EMAIL.isNotBlank()) {
+                    profileViewModel.deletePreviousAdmin(Constants.ADMIN_EMAIL)
+                }
+                profileViewModel.upsertAdmin(
+                    UserProfile(
+                        enteredProfileEmail.text.toString(),
+                        enteredProfileName.text.toString()
+                    )
+                )
+                profileViewModel.upsertSuccessEvent.observe(viewLifecycleOwner) {
+                    if (it) {
+                        showProfileDetails()
+                        dialog.dismiss()
+                    }
                 }
             }
         }
