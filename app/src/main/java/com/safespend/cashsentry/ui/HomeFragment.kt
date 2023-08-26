@@ -49,7 +49,6 @@ class HomeFragment : Fragment() {
         binding.btnAddCard.setOnClickListener{
             showDialogBox()
         }
-
         viewLifecycleOwner.lifecycleScope.launch {
             homeViewModel.userWallet.collect{state ->
                 val userWallet = state.userWallet
@@ -62,7 +61,6 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-
         return binding.root
     }
 
@@ -70,7 +68,7 @@ class HomeFragment : Fragment() {
         val dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
 //        dialog.setCancelable(false)
-        dialog.setContentView(R.layout.custom_dialog_layout)
+        dialog.setContentView(R.layout.custom_dialog_layout_addingcards)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         val moneyCards = resources.getStringArray(R.array.moneycards)

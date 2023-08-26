@@ -16,7 +16,6 @@ import com.safespend.cashsentry.util.Constants
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    lateinit var database: CashSentryDB
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_CashSentry)
@@ -29,16 +28,8 @@ class MainActivity : AppCompatActivity() {
         binding.meowBottonNavigation.add(MeowBottomNavigation.Model(2, R.drawable.ic_history))
         binding.meowBottonNavigation.add(MeowBottomNavigation.Model(3, R.drawable.ic_profile))
 
-        binding.meowBottonNavigation.setCount(2, "22")
-        binding.meowBottonNavigation.setCount(1, "$$")
+        binding.meowBottonNavigation.setCount(2, "*")
         binding.meowBottonNavigation.show(1)
-
-        database = CashSentryDB.getDB(this)
-
-        GlobalScope.launch {
-            database.userRepository().upsertUser(UserProfile(Constants.ADMIN_EMAIL, "Admin"))
-            Log.i("db","running")
-        }
 
         binding.meowBottonNavigation.setOnClickMenuListener {
             when(it.id){
@@ -66,6 +57,11 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
         navController.navigate(R.id.notificationFragment)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        binding.meowBottonNavigation.show(1)
     }
 
 }
