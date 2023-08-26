@@ -45,11 +45,18 @@ class HomeFragment : Fragment() {
         homeViewModel = ViewModelProvider(requireActivity(), HomeViewModelFactory(application = requireContext())).get(HomeViewModel::class.java)
         moneycardRecyclerView = binding.recyclerCards
         moneycardRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-
         binding.btnAddCard.setOnClickListener{
             showDialogBox()
         }
+
+        showMoneyCards()
+
+        return binding.root
+    }
+
+    private fun showMoneyCards() {
         viewLifecycleOwner.lifecycleScope.launch {
+            homeViewModel.getWalletDemo()
             homeViewModel.userWallet.collect{state ->
                 val userWallet = state.userWallet
                 if (state.isLoading) {
@@ -61,7 +68,6 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-        return binding.root
     }
 
     private fun showDialogBox(){
@@ -83,14 +89,38 @@ class HomeFragment : Fragment() {
 
         btnAdd?.let {
             it.setOnClickListener {
-                val moneycardInstance = MoneyCardModel(selectedCard.text.toString(), selectedCardAmt.text.toString())
-                homeViewModel.upsertWallet(moneycardInstance)
-                homeViewModel.upsertSuccessEvent.observe(viewLifecycleOwner){
-                    if(it){
-                        dialog.dismiss()
+                homeViewModel.getUserData()
+                viewLifecycleOwner.lifecycleScope.launch {
+                    homeViewModel.userData.collect { state ->
+                        val userData = state.userProfile
+                        if (state.isLoading) {
+                            Log.i("UI load", "lol")
+                        } else if (state.error.isNotEmpty()) {
+                            Log.i("UI error", "lol")
+                        } else if (userData != null) {
+                            val moneycardInstance = MoneyCardModel(
+                                name = selectedCard.text.toString(),
+                                totalAmt = selectedCardAmt.text.toString(),
+                                email = userData.email
+                            )
+                            homeViewModel.upsertWallet(moneycardInstance)
+                            homeViewModel.upsertSuccessEvent.observe(viewLifecycleOwner) {
+                                if (it) {
+                                    showMoneyCards()
+                                    dialog.dismiss()
+                                }
+                            }
+                        }
                     }
                 }
             }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewLifecycleOwner.lifecycleScope.launch {
+            showMoneyCards()
         }
     }
 

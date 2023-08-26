@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         binding.meowBottonNavigation.add(MeowBottomNavigation.Model(2, R.drawable.ic_history))
         binding.meowBottonNavigation.add(MeowBottomNavigation.Model(3, R.drawable.ic_profile))
 
-        binding.meowBottonNavigation.setCount(2, "*")
+        binding.meowBottonNavigation.setCount(2, "#")
         binding.meowBottonNavigation.show(1)
 
         binding.meowBottonNavigation.setOnClickMenuListener {
