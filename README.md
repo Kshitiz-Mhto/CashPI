@@ -36,6 +36,18 @@ MVVM (Model-View-ViewModel) is a software architectural pattern for developing u
 </td>
 <td>
 <p align="center">
+	<img src="./assets/adding_screenshot.png" alt="homescreen" height="auto">
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p align="center">
+	<img src="./assets/cash_access_screenshot.png" alt="homescreen" height="auto">
+</p>
+</td>
+<td>
+<p align="center">
 	<img src="./assets/history_screenshot.png" alt="homescreen" height="auto">
 </p>
 </td>
