@@ -45,9 +45,11 @@ class HomeFragment : Fragment() {
         homeViewModel = ViewModelProvider(requireActivity(), HomeViewModelFactory(application = requireContext())).get(HomeViewModel::class.java)
         moneycardRecyclerView = binding.recyclerCards
         moneycardRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+
         binding.btnAddCard.setOnClickListener{
-            showDialogBox()
+            showDialogBoxForCardCreation()
         }
+
 
         showMoneyCards()
 
@@ -70,7 +72,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun showDialogBox(){
+    private fun showDialogBoxForCardCreation(){
         val dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
 //        dialog.setCancelable(false)
