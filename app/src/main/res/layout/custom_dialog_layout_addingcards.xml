@@ -22,7 +22,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="10dp"
             android:hint="Select your Card"
             app:startIconDrawable="@drawable/ic_card"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter your amount"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="10dp"
             app:startIconDrawable="@drawable/ic_money_24"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
             <com.google.android.material.textfield.TextInputEditText
@@ -49,6 +49,23 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/blur"
                 android:inputType="number"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your serial number"
+            android:layout_marginBottom="15dp"
+            app:startIconDrawable="@drawable/ic_password_24"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/enteredSerialNum"
+                android:textSize="20sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/blur"
+                android:inputType="textPhonetic"
                 />
         </com.google.android.material.textfield.TextInputLayout>
 

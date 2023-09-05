@@ -13,21 +13,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="70dp"
-        android:paddingTop="60dp"
+        android:paddingBottom="90dp"
         android:layout_marginStart="15dp"
         android:gravity="center"
         android:layout_marginEnd="15dp">
+
+        <ImageView
+            android:layout_width="90dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/cashsentry_flash_logo"
+            android:layout_marginTop="25dp"
+            />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter your amount here."
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="10dp"
             app:startIconDrawable="@drawable/ic_money_24"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/enteredProfileEmail"
+                android:id="@+id/enteredAmountForAccess"
                 android:textSize="20sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -39,7 +46,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="25dp"
             android:orientation="horizontal">
         <Button
             android:id="@+id/btnWithdrawl"
