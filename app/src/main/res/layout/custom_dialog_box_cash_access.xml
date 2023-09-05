@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/statsLayoutCardview"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="#C1FFFFFF"
+    android:layout_marginStart="26dp"
+    android:layout_marginEnd="25dp"
+    app:cardCornerRadius="12dp">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="70dp"
+        android:paddingTop="60dp"
+        android:layout_marginStart="15dp"
+        android:gravity="center"
+        android:layout_marginEnd="15dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your amount here."
+            android:layout_marginBottom="20dp"
+            app:startIconDrawable="@drawable/ic_money_24"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/enteredProfileEmail"
+                android:textSize="20sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/blur"
+                android:inputType="number"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+        <Button
+            android:id="@+id/btnWithdrawl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Withdraw"
+            android:layout_weight="1"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/curve_shape"
+            android:fontFamily="@font/montserrat_medium"
+            />
+            <Button
+                android:id="@+id/btnDeposit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Deposit"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/curve_shape"
+                android:fontFamily="@font/montserrat_medium"
+                />
+        </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.cardview.widget.CardView>

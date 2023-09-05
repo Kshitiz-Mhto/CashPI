@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="215dp"
         app:cardBackgroundColor="@android:color/transparent"
+        android:clickable="true"
         app:cardCornerRadius="15dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
