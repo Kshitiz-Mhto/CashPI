@@ -13,5 +13,5 @@ data class HistoryModel(
     val isDesposit: Boolean = false,
     val isWithdrawl: Boolean = false,
     val amt: Long,
-    @ColumnInfo("email") val email: String = Constants.ADMIN_EMAIL
+    @ColumnInfo("email") val email: String = ""
 )
