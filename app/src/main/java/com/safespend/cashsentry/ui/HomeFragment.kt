@@ -27,11 +27,12 @@ import com.safespend.cashsentry.viewmodel.wallet.HomeViewModel
 import com.safespend.cashsentry.viewmodel.wallet.HomeViewModelFactory
 import kotlinx.coroutines.launch
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(),MoneyCardRecyclerViewAdapter.OnItemClickListener {
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var moneycardRecyclerView: RecyclerView
     private lateinit var homeViewModel: HomeViewModel
+    private lateinit var tempCardModel: List<MoneyCardModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,10 +51,91 @@ class HomeFragment : Fragment() {
             showDialogBoxForCardCreation()
         }
 
-
-        showMoneyCards()
+        viewLifecycleOwner.lifecycleScope.launch {
+            homeViewModel.getWalletDemo()
+            homeViewModel.userWallet.collect{state ->
+                val userWallet = state.userWallet
+                if (state.isLoading) {
+                    Log.i("UI load", "lol")
+                }else if(state.error.isNotEmpty()) {
+                    Log.i("UI error", "lol")
+                }else if(userWallet != null){
+                    tempCardModel = userWallet
+                    moneycardRecyclerView.adapter = MoneyCardRecyclerViewAdapter(userWallet, requireContext(), this@HomeFragment)
+                }
+            }
+        }
 
         return binding.root
+    }
+
+    override fun onItemClick(position: Int) {
+        // Handle the click event here, for example:
+        val clickedItem = tempCardModel?.get(position)
+        if (clickedItem != null) {
+            val dialog = Dialog(requireContext())
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setContentView(R.layout.custom_dialog_box_cash_access)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            val selectedAmtForAccess = dialog.findViewById<TextInputEditText>(R.id.enteredAmountForAccess)
+            val btnWithdraw = dialog.findViewById<Button>(R.id.btnWithdrawl)
+            val btnDeposit = dialog.findViewById<Button>(R.id.btnDeposit)
+            dialog.getWindow()!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialog.show()
+
+            btnDeposit.setOnClickListener {
+                homeViewModel.getUserData()
+                viewLifecycleOwner.lifecycleScope.launch {
+                    homeViewModel.userData.collect { state ->
+                        val userData = state.userProfile
+                        if (state.isLoading) {
+                            Log.i("UI load", "lol")
+                        } else if (state.error.isNotEmpty()) {
+                            Log.i("UI error", "lol")
+                        } else if (userData != null) {
+                            val moneycardInstance = MoneyCardModel(
+                                name = clickedItem.name,
+                                totalAmt = (clickedItem.totalAmt.toInt() + selectedAmtForAccess.text.toString().toInt()).toString(),
+                                email = userData.email,
+                                serialNum = clickedItem.serialNum
+                            )
+                            homeViewModel.upsertWallet(moneycardInstance)
+                            homeViewModel.upsertSuccessEvent.observe(viewLifecycleOwner) {
+                                if (it) {
+                                    dialog.dismiss()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            btnWithdraw.setOnClickListener {
+                homeViewModel.getUserData()
+                viewLifecycleOwner.lifecycleScope.launch {
+                    homeViewModel.userData.collect { state ->
+                        val userData = state.userProfile
+                        if (state.isLoading) {
+                            Log.i("UI load", "lol")
+                        } else if (state.error.isNotEmpty()) {
+                            Log.i("UI error", "lol")
+                        } else if (userData != null) {
+                            val moneycardInstance = MoneyCardModel(
+                                name = clickedItem.name,
+                                totalAmt = (clickedItem.totalAmt.toInt() - selectedAmtForAccess.text.toString().toInt()).toString(),
+                                email = userData.email,
+                                serialNum = clickedItem.serialNum
+                            )
+                            homeViewModel.upsertWallet(moneycardInstance)
+                            homeViewModel.upsertSuccessEvent.observe(viewLifecycleOwner) {
+                                if (it) {
+                                    dialog.dismiss()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun showMoneyCards() {
@@ -66,7 +148,7 @@ class HomeFragment : Fragment() {
                 }else if(state.error.isNotEmpty()) {
                     Log.i("UI error", "lol")
                 }else if(userWallet != null){
-                    moneycardRecyclerView.adapter = MoneyCardRecyclerViewAdapter(userWallet, requireContext())
+                    moneycardRecyclerView.adapter = MoneyCardRecyclerViewAdapter(userWallet, requireContext(), this@HomeFragment)
                 }
             }
         }
@@ -83,6 +165,7 @@ class HomeFragment : Fragment() {
         val arrayadapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, moneyCards)
         val selectedCard = dialog.findViewById<AutoCompleteTextView>(R.id.selectedMoneyCard)
         val selectedCardAmt = dialog.findViewById<TextInputEditText>(R.id.enteredAmount)
+        val enteredSerialNum = dialog.findViewById<TextInputEditText>(R.id.enteredSerialNum)
         val btnAdd = dialog.findViewById<Button>(R.id.btnAdd)
 
         selectedCard.setAdapter(arrayadapter)
@@ -103,12 +186,12 @@ class HomeFragment : Fragment() {
                             val moneycardInstance = MoneyCardModel(
                                 name = selectedCard.text.toString(),
                                 totalAmt = selectedCardAmt.text.toString(),
-                                email = userData.email
+                                email = userData.email,
+                                serialNum = addHyphensTo16DigitString(enteredSerialNum.text.toString())
                             )
                             homeViewModel.upsertWallet(moneycardInstance)
                             homeViewModel.upsertSuccessEvent.observe(viewLifecycleOwner) {
                                 if (it) {
-                                    showMoneyCards()
                                     dialog.dismiss()
                                 }
                             }
@@ -118,12 +201,15 @@ class HomeFragment : Fragment() {
             }
         }
     }
-
-    override fun onResume() {
-        super.onResume()
-        viewLifecycleOwner.lifecycleScope.launch {
-            showMoneyCards()
+    private fun addHyphensTo16DigitString(input: String): String {
+        val formattedString = StringBuilder()
+        for (i in input.indices) {
+            if (i > 0 && i % 4 == 0) {
+                formattedString.append(" - ")
+            }
+            formattedString.append(input[i])
         }
+        return formattedString.toString()
     }
 
 }
