@@ -14,6 +14,7 @@ import android.view.Window
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -80,6 +81,7 @@ class HomeFragment : Fragment(),MoneyCardRecyclerViewAdapter.OnItemClickListener
             val selectedAmtForAccess = dialog.findViewById<TextInputEditText>(R.id.enteredAmountForAccess)
             val btnWithdraw = dialog.findViewById<Button>(R.id.btnWithdrawl)
             val btnDeposit = dialog.findViewById<Button>(R.id.btnDeposit)
+            val btnDelete = dialog.findViewById<Button>(R.id.btnDelete)
             dialog.getWindow()!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             dialog.show()
 
@@ -99,9 +101,10 @@ class HomeFragment : Fragment(),MoneyCardRecyclerViewAdapter.OnItemClickListener
                                 email = userData.email,
                                 serialNum = clickedItem.serialNum
                             )
-                            homeViewModel.upsertWallet(moneycardInstance)
-                            homeViewModel.upsertSuccessEvent.observe(viewLifecycleOwner) {
+                            homeViewModel.updateWallet(moneycardInstance)
+                            homeViewModel.updateSuccessEvent.observe(viewLifecycleOwner) {
                                 if (it) {
+                                    Toast.makeText(requireContext(), "Money Card Updated Successfully!!", Toast.LENGTH_LONG).show()
                                     dialog.dismiss()
                                 }
                             }
@@ -110,7 +113,6 @@ class HomeFragment : Fragment(),MoneyCardRecyclerViewAdapter.OnItemClickListener
                 }
             }
             btnWithdraw.setOnClickListener {
-                homeViewModel.getUserData()
                 viewLifecycleOwner.lifecycleScope.launch {
                     homeViewModel.userData.collect { state ->
                         val userData = state.userProfile
@@ -125,9 +127,10 @@ class HomeFragment : Fragment(),MoneyCardRecyclerViewAdapter.OnItemClickListener
                                 email = userData.email,
                                 serialNum = clickedItem.serialNum
                             )
-                            homeViewModel.upsertWallet(moneycardInstance)
-                            homeViewModel.upsertSuccessEvent.observe(viewLifecycleOwner) {
+                            homeViewModel.updateWallet(moneycardInstance)
+                            homeViewModel.updateSuccessEvent.observe(viewLifecycleOwner) {
                                 if (it) {
+                                    Toast.makeText(requireContext(), "Money Card Updated Successfully!!", Toast.LENGTH_LONG).show()
                                     dialog.dismiss()
                                 }
                             }
@@ -135,22 +138,33 @@ class HomeFragment : Fragment(),MoneyCardRecyclerViewAdapter.OnItemClickListener
                     }
                 }
             }
-        }
-    }
-
-    private fun showMoneyCards() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            homeViewModel.getWalletDemo()
-            homeViewModel.userWallet.collect{state ->
-                val userWallet = state.userWallet
-                if (state.isLoading) {
-                    Log.i("UI load", "lol")
-                }else if(state.error.isNotEmpty()) {
-                    Log.i("UI error", "lol")
-                }else if(userWallet != null){
-                    moneycardRecyclerView.adapter = MoneyCardRecyclerViewAdapter(userWallet, requireContext(), this@HomeFragment)
+            btnDelete.setOnClickListener {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    homeViewModel.userData.collect { state ->
+                        val userData = state.userProfile
+                        if (state.isLoading) {
+                            Log.i("UI load", "lol")
+                        } else if (state.error.isNotEmpty()) {
+                            Log.i("UI error", "lol")
+                        } else if (userData != null) {
+                            val moneycardInstance = MoneyCardModel(
+                                name = clickedItem.name,
+                                totalAmt = clickedItem.totalAmt,
+                                email = clickedItem.email,
+                                serialNum = clickedItem.serialNum
+                            )
+                            homeViewModel.deleteWallet(moneycardInstance)
+                            homeViewModel.deleteSuccessEvent.observe(viewLifecycleOwner) {
+                                if (it) {
+                                    Toast.makeText(requireContext(), "Money Card Deletion Successfully!!", Toast.LENGTH_LONG).show()
+                                    dialog.dismiss()
+                                }
+                            }
+                        }
+                    }
                 }
             }
+
         }
     }
 
@@ -189,9 +203,10 @@ class HomeFragment : Fragment(),MoneyCardRecyclerViewAdapter.OnItemClickListener
                                 email = userData.email,
                                 serialNum = addHyphensTo16DigitString(enteredSerialNum.text.toString())
                             )
-                            homeViewModel.upsertWallet(moneycardInstance)
-                            homeViewModel.upsertSuccessEvent.observe(viewLifecycleOwner) {
+                            homeViewModel.insertWallet(moneycardInstance)
+                            homeViewModel.insertSuccessEvent.observe(viewLifecycleOwner) {
                                 if (it) {
+                                    Toast.makeText(requireContext(), "Money Card Created Successfully!!", Toast.LENGTH_LONG).show()
                                     dialog.dismiss()
                                 }
                             }

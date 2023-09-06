@@ -5,6 +5,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
 import com.safespend.cashsentry.data.local_data_source.model.HistoryModel
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface HistoryRepostory {
@@ -13,7 +14,7 @@ interface HistoryRepostory {
     suspend fun upsertHistory(historyModel: HistoryModel)
 
     @Transaction
-    @Query("SELECT * FROM history WHERE email = :email")
-    suspend fun getUserWithHistory(email: String): List<HistoryModel>
+    @Query("SELECT * FROM history")
+    fun getUserWithHistory(): Flow<List<HistoryModel>>
 
 }

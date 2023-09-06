@@ -49,6 +49,7 @@ class HistoryFragment : Fragment() {
         historyRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         viewLifecycleOwner.lifecycleScope.launch {
+            historyViewModel.getHistoryDemo()
             historyViewModel.userHistory.collect{state ->
                 val userHistory = state.userHistory
                 if (state.isLoading) {
@@ -63,16 +64,22 @@ class HistoryFragment : Fragment() {
                             .setAutoCancel(true)
                             .setPriority(NotificationCompat.PRIORITY_HIGH)
                         val notifyId = history.id
-                        if (history.isDesposit) {
+                        if (history.isUpdated) {
                             notificationBuilder
-                                    .setContentTitle("Deposit Alert!!")
-                                    .setContentText("You have successfully deposited in your Card-I of amount ${history.amt}")
+                                    .setContentTitle("Update Alert!!")
+                                    .setContentText("You have successfully updated in your ${history.serialNum} Card with amount ${history.amt}.")
 
                         }
-                        if (history.isWithdrawl) {
+                        if (history.isCreated) {
                             notificationBuilder
-                                    .setContentTitle("WithDrawl Alert!!")
-                                    .setContentText("You have succesfully withdrawl from your Card-I of amount ${history.amt}")
+                                    .setContentTitle("Creation Alert!!")
+                                    .setContentText("You have succesfully created your Card with ${history.serialNum} serial number of amount ${history.amt}.")
+
+                        }
+                        if (history.isDeleted) {
+                            notificationBuilder
+                                .setContentTitle("Deletion Alert!!")
+                                .setContentText("You have succesfully deleted your Card with ${history.serialNum} serial number.")
 
                         }
                         val notification = notificationBuilder.build()

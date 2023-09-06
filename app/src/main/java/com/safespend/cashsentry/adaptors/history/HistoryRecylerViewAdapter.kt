@@ -28,14 +28,18 @@ class HistoryRecylerViewAdapter(val notificationList: List<HistoryModel>?, val c
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolderForNotification, position: Int) {
         val index_element = notificationList!![position]
-        if(index_element.isDesposit){
-            holder.notifyContent.text = "You have successfully deposited in your Card-I of amount ${index_element.amt}"
-            holder.alertTitle.text = "Deposit Alert!!"
-            holder.alertLogo.setImageResource(R.drawable.deposit)
+        if(index_element.isCreated){
+            holder.notifyContent.text = "You have succesfully created your Card with ${index_element.serialNum} serial number of amount $ ${index_element.amt}"
+            holder.alertTitle.text = "Created Alert!!"
+            holder.alertLogo.setImageResource(R.drawable.creation)
+        }else if(index_element.isUpdated){
+            holder.notifyContent.text = "You have successfully updated in your ${index_element.serialNum} Card with amount $ ${index_element.amt}."
+            holder.alertTitle.text = "Updated Alert!!"
+            holder.alertLogo.setImageResource(R.drawable.update)
         }else{
-            holder.notifyContent.text = "You have successfully withdrawl from your Card-I of amount ${index_element.amt}"
-            holder.alertTitle.text = "Withdrawl Alert!!"
-            holder.alertLogo.setImageResource(R.drawable.withdrawl)
+            holder.notifyContent.text = "You have succesfully deleted your Card with ${index_element.serialNum} serial number."
+            holder.alertTitle.text = "Deletion Alert!!"
+            holder.alertLogo.setImageResource(R.drawable.deletion)
         }
         holder.alertDate.text = (LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))).toString()
     }
