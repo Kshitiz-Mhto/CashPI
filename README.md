@@ -58,3 +58,17 @@ MVVM (Model-View-ViewModel) is a software architectural pattern for developing u
 </td>
 </tr>
 </table>
+
+### Technology Used
+
+- [LiveData](https://developer.android.com/reference/kotlin/androidx/lifecycle/LiveData)
+
+- [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)
+
+- [Room](https://developer.android.com/jetpack/androidx/releases/room)
+
+- [Co-routines](https://github.com/Kotlin/kotlinx.coroutines)
+
+- [Navigation](https://developer.android.com/jetpack/androidx/releases/navigation)
+
+- [Glide](https://github.com/bumptech/glide)
