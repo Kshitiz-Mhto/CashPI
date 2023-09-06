@@ -59,6 +59,8 @@ MVVM (Model-View-ViewModel) is a software architectural pattern for developing u
 </tr>
 </table>
 
+<br>
+
 ### Technology Used
 
 - [LiveData](https://developer.android.com/reference/kotlin/androidx/lifecycle/LiveData)
@@ -72,3 +74,9 @@ MVVM (Model-View-ViewModel) is a software architectural pattern for developing u
 - [Navigation](https://developer.android.com/jetpack/androidx/releases/navigation)
 
 - [Glide](https://github.com/bumptech/glide)
+
+- [MP Charts](https://github.com/PhilJay/MPAndroidChart)
+
+- [Circleimageview](https://github.com/hdodenhof/CircleImageView)
+
+- [meow-bottom-navigation](https://github.com/oneHamidreza/MeowBottomNavigation)
