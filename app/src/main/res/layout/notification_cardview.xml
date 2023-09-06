@@ -39,7 +39,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginStart="10dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/deposit" />
+                android:src="@drawable/creation" />
 
                 <TextView
                     android:id="@+id/alertTitle"

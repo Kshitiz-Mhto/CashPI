@@ -18,13 +18,13 @@
         android:layout_marginBottom="20dp">
 
         <TextView
-            android:id="@+id/etSettings"
+            android:id="@+id/etHistory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
             android:gravity="start"
-            android:paddingBottom="20dp"
-            android:text="SETTINGS"
+            android:paddingBottom="10dp"
+            android:text="HISTORY"
             android:textColor="#8F8C8C"
             android:textSize="20dp"
             android:textStyle="bold" />
