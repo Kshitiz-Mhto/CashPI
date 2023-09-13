@@ -2,8 +2,12 @@ package com.safespend.cashsentry.ui
 
 
 import android.app.Dialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -15,6 +19,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +29,9 @@ import com.safespend.cashsentry.R
 import com.safespend.cashsentry.adaptors.moneycard.MoneyCardRecyclerViewAdapter
 import com.safespend.cashsentry.data.local_data_source.model.MoneyCardModel
 import com.safespend.cashsentry.databinding.FragmentHomeBinding
+import com.safespend.cashsentry.util.Constants
+import com.safespend.cashsentry.viewmodel.history.HistoryViewModel
+import com.safespend.cashsentry.viewmodel.history.HistoryViewModelFactory
 import com.safespend.cashsentry.viewmodel.wallet.HomeViewModel
 import com.safespend.cashsentry.viewmodel.wallet.HomeViewModelFactory
 import kotlinx.coroutines.launch
@@ -34,6 +42,9 @@ class HomeFragment : Fragment(),MoneyCardRecyclerViewAdapter.OnItemClickListener
     private lateinit var moneycardRecyclerView: RecyclerView
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var tempCardModel: List<MoneyCardModel>
+    private lateinit var historyViewModel: HistoryViewModel
+    private val channelId = Constants.CHANNEL_ID
+    private lateinit var notificationManager: NotificationManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +58,9 @@ class HomeFragment : Fragment(),MoneyCardRecyclerViewAdapter.OnItemClickListener
         homeViewModel = ViewModelProvider(requireActivity(), HomeViewModelFactory(application = requireContext())).get(HomeViewModel::class.java)
         moneycardRecyclerView = binding.recyclerCards
         moneycardRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        historyViewModel = ViewModelProvider(requireActivity(), HistoryViewModelFactory(application = requireContext())).get(HistoryViewModel::class.java)
+        notificationManager = requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        createNotificationChannel(channelId, "NotifyChannel", "This is a Notify channel.")
 
         binding.btnAddCard.setOnClickListener{
             showDialogBoxForCardCreation()
@@ -63,6 +77,46 @@ class HomeFragment : Fragment(),MoneyCardRecyclerViewAdapter.OnItemClickListener
                 }else if(userWallet != null){
                     tempCardModel = userWallet
                     moneycardRecyclerView.adapter = MoneyCardRecyclerViewAdapter(userWallet, requireContext(), this@HomeFragment)
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            historyViewModel.getHistoryDemo()
+            historyViewModel.userHistory.collect{state ->
+                val userHistory = state.userHistory
+                if (state.isLoading) {
+                    Log.i("UI load", "lol")
+                }else if(state.error.isNotEmpty()) {
+                    Log.i("UI error", "lol")
+                }else if(state.userHistory != null){
+                    for (history in userHistory!!) {
+                        val notificationBuilder = NotificationCompat.Builder(requireContext(), channelId)
+                            .setSmallIcon(android.R.drawable.ic_dialog_info)
+                            .setAutoCancel(true)
+                            .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        val notifyId = history.id
+                        if (history.isUpdated) {
+                            notificationBuilder
+                                .setContentTitle("Update Alert!!")
+                                .setContentText("You have successfully updated in your ${history.serialNum} Card with amount ${history.amt}.")
+
+                        }
+                        if (history.isCreated) {
+                            notificationBuilder
+                                .setContentTitle("Creation Alert!!")
+                                .setContentText("You have succesfully created your Card with ${history.serialNum} serial number of amount ${history.amt}.")
+
+                        }
+                        if (history.isDeleted) {
+                            notificationBuilder
+                                .setContentTitle("Deletion Alert!!")
+                                .setContentText("You have succesfully deleted your Card with ${history.serialNum} serial number.")
+
+                        }
+                        val notification = notificationBuilder.build()
+                        notificationManager.notify(notifyId, notification)
+                    }
                 }
             }
         }
@@ -164,7 +218,6 @@ class HomeFragment : Fragment(),MoneyCardRecyclerViewAdapter.OnItemClickListener
                     }
                 }
             }
-
         }
     }
 
@@ -225,6 +278,20 @@ class HomeFragment : Fragment(),MoneyCardRecyclerViewAdapter.OnItemClickListener
             formattedString.append(input[i])
         }
         return formattedString.toString()
+    }
+
+    private fun createNotificationChannel(id: String, name: String, description: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel(id, name, importance).apply {
+                setDescription(description)
+                enableLights(true)
+                lightColor = Color.RED
+                enableVibration(true)
+                vibrationPattern = longArrayOf(100, 200, 300, 400, 500)
+            }
+            notificationManager.createNotificationChannel(channel)
+        }
     }
 
 }
